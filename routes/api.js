@@ -8,40 +8,35 @@
 
 'use strict';
 
-module.exports = function (app) {
+const express = require("express");
+const { 
+  getAllBooks, 
+  addBook, 
+  deleteAll, 
+  getASingleBook, 
+  addComment, 
+  deleteBook 
 
-  app.route('/api/books')
-    .get(function (req, res){
-      //response will be array of book objects
-      //json res format: [{"_id": bookid, "title": book_title, "commentcount": num_of_comments },...]
-    })
+} = require("../controllers");
+const router = express.Router();
+
+  router.route('/books')
+    .get(getAllBooks)
     
-    .post(function (req, res){
-      let title = req.body.title;
-      //response will contain new book object including atleast _id and title
-    })
+    .post(addBook)
     
-    .delete(function(req, res){
-      //if successful response will be 'complete delete successful'
-    });
+    .delete(deleteAll);
 
 
 
-  app.route('/api/books/:id')
-    .get(function (req, res){
-      let bookid = req.params.id;
-      //json res format: {"_id": bookid, "title": book_title, "comments": [comment,comment,...]}
-    })
+  router.route('/books/:_id')
+    .get(getASingleBook)
     
-    .post(function(req, res){
-      let bookid = req.params.id;
-      let comment = req.body.comment;
-      //json res format same as .get
-    })
+    .post(addComment)
     
-    .delete(function(req, res){
-      let bookid = req.params.id;
-      //if successful response will be 'delete successful'
-    });
+    .delete(deleteBook);
   
-};
+
+
+
+module.exports = router;
